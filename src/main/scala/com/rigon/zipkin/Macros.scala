@@ -33,7 +33,6 @@ object traceMacro {
               import com.twitter.util.Duration._
               import com.rigon.zipkin.Tracing._
               withTrace($id, $protocol, fromSeconds($duration)) {
-                println("suprise, mothefucker!")
                 $expr
               }
             }
