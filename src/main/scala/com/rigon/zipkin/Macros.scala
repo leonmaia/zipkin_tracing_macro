@@ -27,7 +27,7 @@ object traceMacro {
     val result = {
       annottees.map(_.tree).toList match {
         case q"$mods def $name[..$params](...$paramss): $returnType = $expr" :: Nil =>
-          println(s"Method $name($paramss): $returnType will be traced.")
+          println(s"Method $name: $returnType will be traced.")
           q"""
              $mods def $name[..$params](...$paramss): $returnType = {
               import com.twitter.util.Duration._
@@ -45,14 +45,14 @@ object traceMacro {
 
 object Tracing {
 
-  val log = Logger.getLogger(getClass)
+  private val traceLog = Logger.getLogger(getClass)
 
   def withTrace[T](id: String, protocol: String = "custom", timeout: Duration = fromSeconds(1)) (block: => Future[T]) = {
     Trace.traceService(id, protocol, Option.empty) {
       Trace.record(Annotation.ClientSend())
       val time = System.currentTimeMillis()
       withTimeout(id, timeout, block) map { res =>
-        log.info(s"$id API took ${System.currentTimeMillis() - time}ms to respond")
+        traceLog.info(s"$id API took ${System.currentTimeMillis() - time}ms to respond")
         Trace.record(Annotation.ClientRecv())
         res
       }
