@@ -30,8 +30,8 @@ object traceMacro {
           println(s"Method $name: $returnType will be traced.")
           q"""
              $mods def $name[..$params](...$paramss): $returnType = {
-              import com.twitter.util.Duration._
-              import com.rigon.zipkin.Tracing._
+              import com.twitter.util.Duration.fromSeconds
+              import com.rigon.zipkin.Tracing.withTrace
               withTrace($id, $protocol, fromSeconds($duration)) {
                 $expr
               }
