@@ -16,6 +16,8 @@ scalaVersion := "2.11.5"
 
 val finagleVersion = "6.25.0"
 
+organization := "com.rigon"
+
 libraryDependencies ++= Seq(
   "com.sksamuel.elastic4s" %% "elastic4s" % "1.4.0",
   "com.twitter" %% "twitter-server" % "1.10.0",
@@ -53,8 +55,6 @@ testOptions in Test += Tests.Cleanup(() => {
   files map delete
 })
 
-ScoverageSbtPlugin.ScoverageKeys.coverageExcludedPackages := "com.hu.server.*;com.hu.service.metrics.MetricsStatsReceiver;com.hu.core.rockinrio.*"
-
 ScoverageSbtPlugin.ScoverageKeys.coverageMinimum := 65
 
 ScoverageSbtPlugin.ScoverageKeys.coverageFailOnMinimum := true
@@ -73,7 +73,7 @@ lazy val generatePropertiesTask = Def.task {
   var contents = s"name=${name.value}"
   contents += s"\nversion=${version.value}"
   contents += s"\nbuild=${version.value}"
-  contents += "\nscm_repository=https://bitbucket.org/hotelurbano/hu-search"
+  contents += "\nscm_repository=https://github.com/andrerigon/zipkin_tracing_macro.git"
   contents += s"\nbuild_branch_name=" + Process("git rev-parse --abbrev-ref HEAD").lines.head.split("/").last
   contents += "\nbuild_revision=" + Process("git rev-parse HEAD").lines.head
   contents += "\nbuild_last_few_commits=" + s"${Process("git log --oneline -n 5").lines.map(_.split(" ").tail.mkString(" ")).mkString("\\n")}"
@@ -103,4 +103,4 @@ addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0-M5" cross CrossVersion
 
 releaseSettings
 
-publishTo := Some(Resolver.file("Local repo", file("~/.m2/repository")))
+publishTo := Some(Resolver.file("Local repo", Path.userHome / ".m2" / "repository" asFile ))
