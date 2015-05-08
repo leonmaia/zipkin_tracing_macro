@@ -26,7 +26,7 @@ object traceMacro {
     val timeout = list.last
 
     val fileName = c.enclosingPosition.source.path
-    val shortFileName = fileName.substring(fileName.lastIndexOf("/")+1)
+    val shortFileName = fileName.substring(fileName.lastIndexOf("/")+1).replace(".scala", "")
     val result = {
       annottees.map(_.tree).toList match {
         case q"$mods def $name[..$params](...$paramss): $returnType = $expr" :: Nil =>
