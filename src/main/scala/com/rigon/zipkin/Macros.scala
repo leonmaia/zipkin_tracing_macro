@@ -13,7 +13,7 @@ import scala.language.experimental.macros
 
 
 @compileTimeOnly("traced macro")
-class traced(name: String, protocol: String, duration: Int) extends StaticAnnotation {
+class traced(name: String, protocol: String, timeout: Duration) extends StaticAnnotation {
   def macroTransform(annottees: Any*) = macro traceMacro.impl
 }
 
@@ -23,7 +23,7 @@ object traceMacro {
     val list = c.macroApplication.children.head.children.head.children.tail
     val id = list.head
     val protocol = list.tail.head
-    val duration = list.last
+    val timeout = list.last
 
     val fileName = c.enclosingPosition.source.path
     val shortFileName = fileName.substring(fileName.lastIndexOf("/")+1)
@@ -33,9 +33,8 @@ object traceMacro {
           println(s"[$shortFileName] Method $name: $returnType will be traced.")
           q"""
              $mods def $name[..$params](...$paramss): $returnType = {
-              import com.twitter.util.Duration.fromSeconds
               import com.rigon.zipkin.Tracing.withTrace
-              withTrace($id, $protocol, fromSeconds($duration)) {
+              withTrace($id, $protocol, $timeout) {
                 $expr
               }
             }
