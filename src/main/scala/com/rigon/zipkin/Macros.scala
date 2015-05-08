@@ -24,10 +24,13 @@ object traceMacro {
     val id = list.head
     val protocol = list.tail.head
     val duration = list.last
+
+    val fileName = c.enclosingPosition.source.path
+    val shortFileName = fileName.substring(fileName.lastIndexOf("/")+1)
     val result = {
       annottees.map(_.tree).toList match {
         case q"$mods def $name[..$params](...$paramss): $returnType = $expr" :: Nil =>
-          println(s"Method $name: $returnType will be traced.")
+          println(s"[$shortFileName] Method $name: $returnType will be traced.")
           q"""
              $mods def $name[..$params](...$paramss): $returnType = {
               import com.twitter.util.Duration.fromSeconds
