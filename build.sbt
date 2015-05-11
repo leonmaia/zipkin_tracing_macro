@@ -67,29 +67,6 @@ addCommandAlias("cov", "; clean; coverage; test")
 
 Revolver.settings
 
-
-lazy val generatePropertiesTask = Def.task {
-  val file = (resourceManaged in Compile).value / "build.properties"
-  var contents = s"name=${name.value}"
-  contents += s"\nversion=${version.value}"
-  contents += s"\nbuild=${version.value}"
-  contents += "\nscm_repository=https://github.com/andrerigon/zipkin_tracing_macro.git"
-  contents += s"\nbuild_branch_name=" + Process("git rev-parse --abbrev-ref HEAD").lines.head.split("/").last
-  contents += "\nbuild_revision=" + Process("git rev-parse HEAD").lines.head
-  contents += "\nbuild_last_few_commits=" + s"${Process("git log --oneline -n 5").lines.map(_.split(" ").tail.mkString(" ")).mkString("\\n")}"
-  IO.write(file, contents)
-  Seq(file)
-}
-
-resourceGenerators in Compile += generatePropertiesTask.taskValue
-
-mappings in(Compile, packageSrc) ++= {
-  val allGeneratedFiles = ((resourceManaged in Compile).value ** "*") filter {
-    _.isFile
-  }
-  allGeneratedFiles.get pair relativeTo((resourceManaged in Compile).value)
-}
-
 test in assembly := {}
 
 assemblyMergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
