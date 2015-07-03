@@ -19,22 +19,13 @@ val finagleVersion = "6.25.0"
 organization := "com.rigon"
 
 libraryDependencies ++= Seq(
-  "com.sksamuel.elastic4s" %% "elastic4s" % "1.4.0",
   "com.twitter" %% "twitter-server" % "1.10.0",
   "com.twitter" % "finagle-core_2.11" % "6.2.0",
   "com.twitter" %% "finagle-http" % finagleVersion,
   "com.twitter" %% "finagle-mysql" % finagleVersion,
-  "redis.clients" % "jedis" % "2.6.2",
   ("com.twitter" %% "finagle-stats" % finagleVersion).exclude("asm", "asm"),
-  "com.codahale.metrics" % "metrics-graphite" % "3.0.1",
   "com.twitter" %% "finagle-zipkin" % finagleVersion,
-  "org.slf4j" % "slf4j-log4j12" % "1.7.10",
-  "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.4.4",
-  "com.typesafe.akka" %% "akka-actor" % "2.3.6",
-  "com.typesafe" % "config" % "1.2.1",
-  "mesosphere" %% "jackson-case-class-module" % "0.1.2",
-  "org.springframework" % "spring-core" % "4.1.6.RELEASE",
-  "org.springframework" % "spring-context" % "4.1.6.RELEASE"
+  "org.slf4j" % "slf4j-log4j12" % "1.7.10"
 )
 
 // test
