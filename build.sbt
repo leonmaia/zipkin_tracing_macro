@@ -12,15 +12,15 @@ resolvers ++= Seq("Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/
 
 resolvers += "Mesosphere Public Repository" at "http://downloads.mesosphere.io/maven"
 
-scalaVersion := "2.11.5"
+scalaVersion := "2.11.7"
 
-val finagleVersion = "6.25.0"
+val finagleVersion = "6.26.0"
 
 organization := "com.rigon"
 
 libraryDependencies ++= Seq(
-  "com.twitter" %% "twitter-server" % "1.10.0",
-  "com.twitter" % "finagle-core_2.11" % "6.2.0",
+  "com.twitter" %% "twitter-server" % "1.11.0",
+  "com.twitter" % "finagle-core_2.11" % finagleVersion,
   "com.twitter" %% "finagle-http" % finagleVersion,
   "com.twitter" %% "finagle-mysql" % finagleVersion,
   ("com.twitter" %% "finagle-stats" % finagleVersion).exclude("asm", "asm"),
