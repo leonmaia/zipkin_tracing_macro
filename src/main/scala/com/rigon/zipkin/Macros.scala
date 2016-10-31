@@ -26,7 +26,7 @@ object traceMacro {
     val timeout = list.last
 
     val fileName = c.enclosingPosition.source.path
-    val shortFileName = fileName.substring(fileName.lastIndexOf("/")+1).replace(".scala", "")
+    val shortFileName = fileName.substring(fileName.lastIndexOf("/") + 1).replace(".scala", "")
     val result = {
       annottees.map(_.tree).toList match {
         case q"$mods def $name[..$params](...$paramss): $returnType = $expr" :: Nil =>
@@ -49,13 +49,11 @@ object Tracing {
 
   private val traceLog = Logger.getLogger(getClass)
 
-  def withTrace[T](id: String, protocol: String = "custom", timeout: Duration = fromSeconds(1)) (block: => Future[T]) = {
+  def withTrace[T](id: String, protocol: String = "custom", timeout: Duration = fromSeconds(1))(block: => Future[T]) = {
     Trace.traceService(id, protocol, Option.empty) {
-      Trace.record(Annotation.ClientSend())
       val time = System.currentTimeMillis()
       withTimeout(id, timeout, block) map { res =>
         traceLog.info(s"$id API took ${System.currentTimeMillis() - time}ms to respond")
-        Trace.record(Annotation.ClientRecv())
         res
       }
     }
@@ -63,11 +61,11 @@ object Tracing {
 
   private def withTimeout[T](id: String = s"${getClass.getSimpleName}", duration: Duration, block: => Future[T]): Future[T] = {
     block.within(
-    DefaultTimer.twitter,
-    duration, {
-      Trace.record(s"$id.timeout")
-      new RequestTimeoutException(duration, s"Timeout exceed while accessing using $id")
-    }
+      DefaultTimer.twitter,
+      duration, {
+        Trace.record(s"$id.timeout")
+        new RequestTimeoutException(duration, s"Timeout exceed while accessing using $id")
+      }
     )
   }
 }

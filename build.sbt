@@ -12,14 +12,14 @@ resolvers ++= Seq("Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/
 
 resolvers += "Mesosphere Public Repository" at "http://downloads.mesosphere.io/maven"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
-val finagleVersion = "6.26.0"
+val finagleVersion = "6.39.0"
 
 organization := "com.rigon"
 
 libraryDependencies ++= Seq(
-  "com.twitter" %% "twitter-server" % "1.11.0",
+  "com.twitter" %% "twitter-server" % "1.24.0",
   "com.twitter" % "finagle-core_2.11" % finagleVersion,
   "com.twitter" %% "finagle-http" % finagleVersion,
   "com.twitter" %% "finagle-mysql" % finagleVersion,
@@ -67,7 +67,7 @@ assemblyMergeStrategy in assembly <<= (mergeStrategy in assembly) { (old) =>
 }
 }
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0-M5" cross CrossVersion.full)
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 releaseSettings
 
